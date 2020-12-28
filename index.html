@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/MarkerCluster.css">
+        <link rel="stylesheet" href="css/MarkerCluster.Default.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="js/leaflet.markercluster.js"></script>
+        <script src="data/zonacercana9_2.js"></script>
+        <script src="data/calleszona9_3.js"></script>
+        <script src="data/puntoszonacercana9_4.js"></script>
+        <script src="data/PHzona9_5.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:20, minZoom:15
+        }).fitBounds([[-32.92248122492426,-68.86632010504403],[-32.91375370136874,-68.84426808220499]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            map.setMaxBounds(map.getBounds());
+        }
+        map.createPane('pane_GoogleSatellite_0');
+        map.getPane('pane_GoogleSatellite_0').style.zIndex = 400;
+        var layer_GoogleSatellite_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleSatellite_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 15,
+            maxZoom: 20,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_GoogleSatellite_0;
+        map.createPane('pane_OpenStreetMap_1');
+        map.getPane('pane_OpenStreetMap_1').style.zIndex = 401;
+        var layer_OpenStreetMap_1 = L.tileLayer('http://a.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_OpenStreetMap_1',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 15,
+            maxZoom: 20,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_OpenStreetMap_1;
+        function pop_zonacercana9_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['padron'] !== null ? autolinker.link(feature.properties['padron'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_zonacercana9_2_0() {
+            return {
+                pane: 'pane_zonacercana9_2',
+                opacity: 1,
+                color: 'rgba(255,1,18,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(190,178,151,0.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_zonacercana9_2');
+        map.getPane('pane_zonacercana9_2').style.zIndex = 402;
+        map.getPane('pane_zonacercana9_2').style['mix-blend-mode'] = 'normal';
+        var layer_zonacercana9_2 = new L.geoJson(json_zonacercana9_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_zonacercana9_2',
+            layerName: 'layer_zonacercana9_2',
+            pane: 'pane_zonacercana9_2',
+            onEachFeature: pop_zonacercana9_2,
+            style: style_zonacercana9_2_0,
+        });
+        bounds_group.addLayer(layer_zonacercana9_2);
+        map.addLayer(layer_zonacercana9_2);
+        function pop_calleszona9_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['nomb'] !== null ? autolinker.link(feature.properties['nomb'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_calleszona9_3_0() {
+            return {
+                pane: 'pane_calleszona9_3',
+                opacity: 1,
+                color: 'rgba(51,160,44,0.28627450980392155)',
+                dashArray: '',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 11.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_calleszona9_3');
+        map.getPane('pane_calleszona9_3').style.zIndex = 403;
+        map.getPane('pane_calleszona9_3').style['mix-blend-mode'] = 'normal';
+        var layer_calleszona9_3 = new L.geoJson(json_calleszona9_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_calleszona9_3',
+            layerName: 'layer_calleszona9_3',
+            pane: 'pane_calleszona9_3',
+            onEachFeature: pop_calleszona9_3,
+            style: style_calleszona9_3_0,
+        });
+        bounds_group.addLayer(layer_calleszona9_3);
+        function pop_puntoszonacercana9_4(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Padron</th>\
+                        <td>' + (feature.properties['padron'] !== null ? autolinker.link(feature.properties['padron'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Cuit</th>\
+                        <td>' + (feature.properties['CUIT'] !== null ? autolinker.link(feature.properties['CUIT'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Titular</th>\
+                        <td>' + (feature.properties['TITULAR'] !== null ? autolinker.link(feature.properties['TITULAR'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Calle</th>\
+                        <td>' + (feature.properties['REAL_CALLE'] !== null ? autolinker.link(feature.properties['REAL_CALLE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Numero</th>\
+                        <td>' + (feature.properties['REAL_NRO'] !== null ? autolinker.link(feature.properties['REAL_NRO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Piso</th>\
+                        <td>' + (feature.properties['REAL_PISO'] !== null ? autolinker.link(feature.properties['REAL_PISO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Oficina</th>\
+                        <td>' + (feature.properties['REAL_OFICI'] !== null ? autolinker.link(feature.properties['REAL_OFICI'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Depto</th>\
+                        <td>' + (feature.properties['REAL_DPTO'] !== null ? autolinker.link(feature.properties['REAL_DPTO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Manzana</th>\
+                        <td>' + (feature.properties['REAL_MZA'] !== null ? autolinker.link(feature.properties['REAL_MZA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Casa</th>\
+                        <td>' + (feature.properties['REAL_CASA'] !== null ? autolinker.link(feature.properties['REAL_CASA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Km</th>\
+                        <td>' + (feature.properties['REAL_KM'] !== null ? autolinker.link(feature.properties['REAL_KM'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Lote</th>\
+                        <td>' + (feature.properties['REAL_LOTE'] !== null ? autolinker.link(feature.properties['REAL_LOTE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Monoblock</th>\
+                        <td>' + (feature.properties['REAL_MONOB'] !== null ? autolinker.link(feature.properties['REAL_MONOB'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_puntoszonacercana9_4_0() {
+            return {
+                pane: 'pane_puntoszonacercana9_4',
+                radius: 9.0,
+                opacity: 1,
+                color: 'rgba(128,17,25,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,30,42,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_puntoszonacercana9_4');
+        map.getPane('pane_puntoszonacercana9_4').style.zIndex = 404;
+        map.getPane('pane_puntoszonacercana9_4').style['mix-blend-mode'] = 'normal';
+        var layer_puntoszonacercana9_4 = new L.geoJson(json_puntoszonacercana9_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_puntoszonacercana9_4',
+            layerName: 'layer_puntoszonacercana9_4',
+            pane: 'pane_puntoszonacercana9_4',
+            onEachFeature: pop_puntoszonacercana9_4,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_puntoszonacercana9_4_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_puntoszonacercana9_4);
+        map.addLayer(layer_puntoszonacercana9_4);
+        function pop_PHzona9_5(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Padron</th>\
+                        <td>' + (feature.properties['PADRON MUN'] !== null ? autolinker.link(feature.properties['PADRON MUN'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Titular</th>\
+                        <td>' + (feature.properties['TITULAR'] !== null ? autolinker.link(feature.properties['TITULAR'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Calle</th>\
+                        <td>' + (feature.properties['REAL_CALLE'] !== null ? autolinker.link(feature.properties['REAL_CALLE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Numero</th>\
+                        <td>' + (feature.properties['REAL_NRO'] !== null ? autolinker.link(feature.properties['REAL_NRO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Piso</th>\
+                        <td>' + (feature.properties['REAL_PISO'] !== null ? autolinker.link(feature.properties['REAL_PISO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Oficina</th>\
+                        <td>' + (feature.properties['REAL_OFICI'] !== null ? autolinker.link(feature.properties['REAL_OFICI'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Depto</th>\
+                        <td>' + (feature.properties['REAL_DPTO'] !== null ? autolinker.link(feature.properties['REAL_DPTO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Manzana</th>\
+                        <td>' + (feature.properties['REAL_MZA'] !== null ? autolinker.link(feature.properties['REAL_MZA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Casa</th>\
+                        <td>' + (feature.properties['REAL_CASA'] !== null ? autolinker.link(feature.properties['REAL_CASA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Kilómetro</th>\
+                        <td>' + (feature.properties['REAL_KM'] !== null ? autolinker.link(feature.properties['REAL_KM'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Lote</th>\
+                        <td>' + (feature.properties['REAL_LOTE'] !== null ? autolinker.link(feature.properties['REAL_LOTE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Monoblock</th>\
+                        <td>' + (feature.properties['REAL_MONOB'] !== null ? autolinker.link(feature.properties['REAL_MONOB'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_PHzona9_5_0() {
+            return {
+                pane: 'pane_PHzona9_5',
+                radius: 8.0,
+                opacity: 1,
+                color: 'rgba(61,128,53,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(84,176,74,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_PHzona9_5');
+        map.getPane('pane_PHzona9_5').style.zIndex = 405;
+        map.getPane('pane_PHzona9_5').style['mix-blend-mode'] = 'normal';
+        var layer_PHzona9_5 = new L.geoJson(json_PHzona9_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_PHzona9_5',
+            layerName: 'layer_PHzona9_5',
+            pane: 'pane_PHzona9_5',
+            onEachFeature: pop_PHzona9_5,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_PHzona9_5_0(feature));
+            },
+        });
+        var cluster_PHzona9_5 = new L.MarkerClusterGroup({showCoverageOnHover: false,
+            spiderfyDistanceMultiplier: 2});
+        cluster_PHzona9_5.addLayer(layer_PHzona9_5);
+
+        bounds_group.addLayer(layer_PHzona9_5);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/PHzona9_5.png" /> PH zona 9': cluster_PHzona9_5,'<img src="legend/puntoszonacercana9_4.png" /> puntos zona cercana 9': layer_puntoszonacercana9_4,'<img src="legend/calleszona9_3.png" /> calles zona 9': layer_calleszona9_3,'<img src="legend/zonacercana9_2.png" /> zona cercana 9': layer_zonacercana9_2,"OpenStreetMap": layer_OpenStreetMap_1,"Google Satellite": layer_GoogleSatellite_0,},{collapsed:false}).addTo(map);
+        setBounds();
+        </script>
+    </body>
+</html>
